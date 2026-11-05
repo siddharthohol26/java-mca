@@ -1,0 +1,67 @@
+Experiment No 3
+import java.sql.*;
+
+public class EmployeeJDBC {
+    static final String URL = "jdbc:mysql://127.0.0.1:3306/college";
+    static final String USER = "root";
+    static final String PASS = "Structure45";
+
+    public static void main(String[] args){
+        try{
+            Connection con = DriverManager.getConnection(URL, USER, PASS);
+            System.out.println("Connected to database successfully");
+
+            String insertSql = "insert into employee" + "(eid, ename, salary, address)"+ " values (?,?,?,?)";
+            PreparedStatement insert = con.prepareStatement(insertSql);
+            insert.setInt(1, 111);
+            insert.setString(2, "Pratik");
+            insert.setDouble(3, 70000);
+            insert.setString(4, "Malkapur");
+
+            int inserted = insert.executeUpdate();
+            System.out.println(inserted + " records inserted");
+
+            String selectSql = "select * from employee";
+
+            PreparedStatement select = con.prepareStatement(selectSql);
+            ResultSet rs = select.executeQuery();
+            System.out.println("Employee records");
+
+            while(rs.next()){
+                System.out.println(
+                        rs.getInt("eid")+" "+
+                                rs.getString("ename")+" "+
+                                rs.getDouble("salary")+" "+
+                                rs.getString("address"));
+            }
+            String updateSql = "UPDATE employee"+" SET salary = ?"+" WHERE eid = ?";
+            PreparedStatement update = con.prepareStatement(updateSql);
+            update.setDouble(1, 80000);
+            update.setInt(2, 113);
+
+            int updated = update.executeUpdate();
+            System.out.println(updated + " records updated");
+            String deleteSql = "DELETE from employee"+" WHERE eid = ?";
+            PreparedStatement delete = con.prepareStatement(deleteSql);
+            delete.setInt(1,111);
+            int deleted = delete.executeUpdate();
+            System.out.println(deleted + " records deleted");
+
+            rs.close();
+            select.close();
+            insert.close();
+            update.close();
+            delete.close();
+            con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+//Sql Code
+CREATE DATABASE college;
+USE college;
+CREATE TABLE employee(eid INT, ename VARCHAR(20), salary INT, address VARCHAR(30));
+INSERT INTO employee(eid, ename, salary, address) VALUES(112, "Nikhil", 70000, "Pune"),(113, "Mayur", 65000, "Jalgaon");
+SELECT * FROM employees; 

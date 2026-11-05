@@ -1,0 +1,149 @@
+Experiment no 5
+<%@ page language="java"
+         contentType="text/html; charset=UTF-8" %>
+<html>
+<head>
+	<title>Student Information</title>
+</head>
+<body>
+	<h2>Student Information Form</h2>
+	<form method="post">
+
+        Roll Number:
+        <input type="text" name="rollno">
+        <br><br>
+
+        Student Name:
+        <input type="text" name="name">
+        <br><br>
+
+        Branch:
+        <select name="branch">
+
+            <option value="Electronics Engineering">
+                Electronics Engineering
+            </option>
+
+            <option value="Computer Engineering">
+                Computer Engineering
+            </option>
+
+            <option value="Electronics and Computer Engineering">
+                Electronics and Computer Engineering
+            </option>
+
+        </select>
+
+        <br><br>
+
+        Year:
+        <select name="year">
+
+            <option value="First Year">
+                First Year
+            </option>
+
+            <option value="Second Year">
+                Second Year
+            </option>
+
+            <option value="Third Year">
+                Third Year
+            </option>
+
+            <option value="Final Year">
+                Final Year
+            </option>
+
+        </select>
+
+        <br><br>
+
+        Email:
+        <input type="text" name="email">
+        <br><br>
+
+        Mobile Number:
+        <input type="text" name="mobile">
+        <br><br>
+
+        <input type="submit" value="Display Information">
+
+    </form>
+
+
+<%
+
+    // Check whether form is submitted
+
+    if (request.getParameter("rollno") != null) {
+
+        // Get student information
+
+        String rollno =
+            request.getParameter("rollno");
+
+        String name =
+            request.getParameter("name");
+
+        String branch =
+            request.getParameter("branch");
+
+        String year =
+            request.getParameter("year");
+
+        String email =
+            request.getParameter("email");
+
+        String mobile =
+            request.getParameter("mobile");
+
+%>
+
+        <hr>
+
+        <h2>Student Information</h2>
+
+        <p>
+            <b>Roll Number:</b>
+            <%= rollno %>
+        </p>
+
+        <p>
+            <b>Student Name:</b>
+            <%= name %>
+        </p>
+
+        <p>
+            <b>Branch:</b>
+            <%= branch %>
+        </p>
+
+        <p>
+            <b>Year:</b>
+            <%= year %>
+        </p>
+
+        <p>
+            <b>Email:</b>
+            <%= email %>
+        </p>
+
+        <p>
+            <b>Mobile Number:</b>
+            <%= mobile %>
+        </p>
+
+        <hr>
+
+        <h3>
+            Student information displayed successfully.
+        </h3>
+
+<%
+
+    }
+
+%>
+</body>
+</html>

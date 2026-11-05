@@ -1,0 +1,94 @@
+experiment No 1
+
+public class Student {
+    int rollno;
+    String name;
+    String address;
+
+    Student(int rollno, String name, String address) {
+        this.rollno = rollno;
+        this.name = name;
+        this.address = address;
+    }
+    public int getRollno() {
+        return rollno;
+    }
+    public void setRollno(int rollno) {
+        this.rollno = rollno;
+    }
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public String getAddress() {
+        return address;
+    }
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Override
+    public String toString() {
+        return "Student [rollno=" + rollno + ", name=" + name + ", address=" + address;
+    }
+}
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+
+public class StudentManagement {
+    ArrayList<Student> studentList = new ArrayList<>();
+    HashMap<Integer, Student> studentHashMap = new HashMap<>();
+
+    public void addStudent(Student s) {
+        studentList.add(s);
+        studentHashMap.put(s.getRollno(), s);
+    }
+    public void displaystudents(){
+        Iterator<Student> iterator = studentList.iterator();
+        while(iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+    }
+    public void searchStudent(int rollno){
+        Student s =  studentHashMap.get(rollno);
+        if(s != null){
+            System.out.println(s);
+        } else {
+            System.out.println("Student not found");
+        }
+    }
+    public void updateStudent(int rollno, String newName, String newAddress){
+        Student s =  studentHashMap.get(rollno);
+
+        if(s != null){
+            s.setName(newName);
+            s.setAddress(newAddress);
+            System.out.println("Student updated");
+        } else {
+            System.out.println("Student not found");
+        }
+
+    }
+}
+
+
+public class Test {
+    public static void main(String[] args) {
+        StudentManagement sm = new StudentManagement();
+        sm.addStudent(new Student(101, "Pratik", "Malkapur"));
+        sm.addStudent(new Student(102, "Aditya", "Alandi"));
+        sm.addStudent(new Student(103, "Om", "Wagholi"));
+        System.out.println("Student Records");
+        sm.displaystudents();
+        System.out.println("search Rollno 102");
+        sm.searchStudent(102);
+        System.out.println("update Rollno 102");
+        sm.updateStudent(102,"Guru", "Nanded");
+        System.out.println("Student Records");
+        sm.displaystudents();
+    }
+}

@@ -1,0 +1,81 @@
+EXP 6
+
+#include "iodefine.h"
+
+#define LCD_DATA    P2
+#define LCD_DATA_PM PM2
+
+#define RS          P1_bit.no0
+#define RS_PM       PM1_bit.no0
+
+#define EN          P1_bit.no1
+#define EN_PM       PM1_bit.no1
+
+void delay(void)
+{
+    volatile unsigned long i;
+    for (i = 0; i < 50000UL; i++)
+    {
+    }
+}
+
+void lcd_command(unsigned char cmd)
+{
+    LCD_DATA = cmd;
+    RS = 0;
+    EN = 1;
+    delay();
+    EN = 0;
+    delay();
+}
+
+void lcd_data(unsigned char dat)
+{
+    LCD_DATA = dat;
+    RS = 1;
+    EN = 1;
+    delay();
+    EN = 0;
+    delay();
+}
+
+void lcd_string(char *str)
+{
+    while (*str)
+    {
+        lcd_data(*str);
+        str++;
+    }
+}
+
+void lcd_init(void)
+{
+    LCD_DATA_PM = 0x00;
+    RS_PM = 0;
+    EN_PM = 0;
+
+    RS = 0;
+    EN = 0;
+
+    delay();
+    lcd_command(0x38);
+    lcd_command(0x0C);
+    lcd_command(0x06);
+    lcd_command(0x01);
+    delay();
+}
+
+void main(void)
+{
+    lcd_init();
+
+    lcd_command(0x80);
+    lcd_string("LM35 Temperature");
+
+    lcd_command(0xC0);
+    lcd_string("33 C");
+
+    while (1)
+    {
+    }
+}

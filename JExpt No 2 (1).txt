@@ -1,0 +1,100 @@
+Experiment No 2
+public class Employee {
+    int id;
+    String name;
+    String dept;
+    double salary;
+    public Employee(int id, String name, String dept, double salary) {
+        this.id = id;
+        this.name = name;
+        this.dept = dept;
+        this.salary = salary;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public String getDept() {
+        return dept;
+    }
+
+    public String toString(){
+        return "Employee id: "+id+" name: "+name+" dept: "+dept+" salary: "+salary;
+    }
+}
+
+
+
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.List;
+
+public class EmployeeManagement {
+    public static void main(String[] args){
+        Scanner sc = new Scanner(System.in);
+        List<Employee> employees = new ArrayList<>();
+
+        employees.add(new Employee(101, "Pratik", "ECE", 72000));
+        employees.add(new Employee(102, "Aditya", "AIDs", 70000));
+        employees.add(new Employee(103, "OM", "Mech", 80000));
+        employees.add(new Employee(104, "Nikhil", "Elec", 82000));
+        employees.add(new Employee(105, "natsya", "Hr", 90000));
+
+        int choice;
+        do{
+            System.out.println("Employee management System");
+            System.out.println("1. Display all employees");
+            System.out.println("2. Filter Employees by salary");
+            System.out.println("3. Filter Employees by Department");
+            System.out.println("4. Sort Employees by Salary");
+            System.out.println("5. sort Employees by name");
+            System.out.println("6. Exit Program");
+            System.out.println("Enter your choice: ");
+            choice = sc.nextInt();
+            sc.nextLine();
+            switch(choice){
+                case 1:
+                    System.out.println("All employees:");
+                    employees.stream().forEach(System.out::println);
+                    break;
+                case 2:
+                    System.out.println("Enter Minimum salary: ");
+                    double minimumSalary = sc.nextDouble();
+                    System.out.println("Filtered employees: ");
+                    employees.stream().filter(emp -> emp.getSalary() >= minimumSalary).forEach(System.out::println);
+                    break;
+                case 3:
+                    System.out.println("enter department: ");
+                    String dept = sc.nextLine();
+                    System.out.println("Emplyees in"+dept+"Department ");
+                    employees.stream().filter(emp->emp.getDept().equalsIgnoreCase(dept)).forEach(System.out::println);
+                    break;
+                case 4:
+                    System.out.println("Employee sorted by salary");
+                    employees.stream().sorted((e1, e2)->Double.compare(e1.getSalary(), e2.getSalary())).forEach(System.out::println);
+                    break;
+                case 5:
+                    System.out.println("Employee sorted by name");
+                    employees.stream().sorted((e1, e2)->e1.getName().compareToIgnoreCase(e2.getName())).forEach(System.out::println);
+                    break;
+                case 6:
+                    System.out.println("Exit");
+                    break;
+                default:
+                    System.out.println("Invalid choice");
+            }
+
+        }while(choice != 6);
+        sc.close();
+
+    }
+}
