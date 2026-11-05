@@ -1,0 +1,99 @@
+EXP 4
+
+
+
+#include <reg51.h>
+#include <stdio.h>
+
+#define LCD_Port P1
+
+sbit rs = P1^5;			/* Register select pin */
+sbit en = P1^4;			/* Enable pin */
+
+void delay(unsigned int count)    		
+{
+     int i,j;
+     for(i=0;i<count;i++)
+				for(j=0;j<112;j++);
+}
+
+void sendNibble()
+{
+	en=1; 
+	delay(5);
+	en=0;
+	delay(5);
+}
+	
+void LCD_Command (char cmnd)	/* LCD16x2 command funtion */
+{
+	LCD_Port = (cmnd & 0xF0) >> 4;/* Send upper nibble */
+	rs=0;			/* Command reg. */
+	sendNibble();
+	
+	LCD_Port = (cmnd & 0x0F) ;/* Send lower nibble */
+	rs=0;			/* Command reg. */
+	sendNibble();
+}
+
+void LCD_Char (char char_data)  /* LCD data write function */
+{
+	LCD_Port =(char_data & 0xF0) >> 4 ;/* Send upper nibble */
+	rs=1;  			/*Data reg.*/
+	sendNibble();
+	
+	LCD_Port = (char_data & 0x0F) ;/* Send lower nibble */
+	rs=1;  			/*Data reg.*/
+	sendNibble();
+}
+
+void LCD_String (char *str)	/* Send string to LCD function */
+{
+	int i;
+	for(i=0;str[i]!=0;i++)  /* Send each char of string till the NULL */
+	{
+		LCD_Char (str[i]);  /* Call LCD data write */
+	}
+}
+
+void LCD_String_xy (char row, char pos, char *str)  /* Send string to LCD function */
+{
+	if (row == 0)
+	LCD_Command((pos & 0x0F)|0x80);
+	else if (row == 1)
+	LCD_Command((pos & 0x0F)|0xC0);
+	LCD_String(str);  	/* Call LCD string function */
+}
+
+void LCD_Setcursor (char row, char pos)  /* Set cursor position */
+{
+	if (row == 0)
+	LCD_Command((pos & 0x0F)|0x80);
+	else if (row == 1)
+	LCD_Command((pos & 0x0F)|0xC0);
+	
+}
+
+void LCD_Init (void)		/* LCD Initialize function */
+{
+	delay(20);		/* LCD Power ON Initialization time >15ms */
+	LCD_Command (0x02);	/* 4bit mode */
+	LCD_Command (0x28);	/* Initialization of 16X2 LCD in 4bit mode */
+	LCD_Command (0x0C);	/* Display ON Cursor OFF */
+	LCD_Command (0x06);	/* Auto Increment cursor */
+	LCD_Command (0x01);	/* clear display */
+	LCD_Command (0x80);	/* cursor at home position */
+}
+
+void main(void)
+{
+LCD_Init();
+	
+LCD_Setcursor(0,0);
+LCD_String_xy(0,1,"MicroEmbedded");	
+LCD_Setcursor(1,0);
+LCD_String_xy(1,1,"Micro51-PRO");
+
+	while(1);
+
+}

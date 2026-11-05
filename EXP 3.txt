@@ -1,0 +1,28 @@
+EXP 3
+
+#include <REG51.h>
+
+void DelayMs(delay)
+{
+int i,j;
+	for(i=0;i<5;i++)
+	{
+	 for(j=0;j<50;j++);
+	}
+}
+
+void main(void)
+{
+	while(1)
+	{
+			P2 = 0x03;
+			DelayMs();
+			P2 = 0x06;
+			DelayMs();
+			P2 = 0x0C;
+			DelayMs();
+			P2 = 0x09;
+			DelayMs();
+	}
+
+}

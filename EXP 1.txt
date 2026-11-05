@@ -1,0 +1,24 @@
+EXP 1
+
+#include <REG51.h>
+
+void delaymS(unsigned long x)
+{
+	while(x > 0 )
+	{
+		unsigned int i=0;
+		for( i=0; i<500;i++);		
+		x--;
+	}
+}
+
+void main()
+{
+	while(1)
+	{
+		P2 = 0x00;		
+		delaymS(100);	
+		P2 = 0xff ; 	
+		delaymS(100);	
+	}
+}
